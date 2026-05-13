@@ -1,56 +1,440 @@
-# NICE HUMAN[OID] Sovereign OS V24
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NICE HUMAN[OID] Sovereign OS V24</title>
 
-NICE HUMAN[OID] is a privacy-first, browser-based Guardian OS for travel, safety, city discovery, transport links, and local assistance.
+<style>
 
-## Live Mission
+:root{
+--gold:#d8b95c;
+--bg:#0B0B0C;
+--glass:rgba(255,255,255,.05);
+}
 
-The Soul of a Guardian.  
-The Mind of a Machine.
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
-## Features
+body{
+background:var(--bg);
+color:white;
+overflow-x:hidden;
+min-height:100vh;
+}
 
-- Agentic city search
-- Google Maps live search
-- Safe-Walk timer
-- VoiceOS Hold-to-Talk
-- SOS Guardian mode
-- Privacy Shield
-- Ghost Protocol: 0 server storage
-- QR Global Connect
-- Transport links for Uber, Grab, Bolt, inDrive, rail, and official portals
-- Canada, Thailand, Netherlands, USA, Japan, France, Morocco, Sweden nodes
-- Lifestyle search: groceries, basketball, nightlife, rooftops, stadiums, cultural centers
+.app{
+padding:1rem;
+max-width:1200px;
+margin:auto;
+}
 
-## How to Use
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:1rem;
+}
 
-1. Open the app link
-2. Tap **Initialize Guardian**
-3. Choose country and city
-4. Search anything:
-   - Groceries
-   - Basketball
-   - Pharmacy
-   - Safe Walk
-   - Night Market
-   - Football Stadium
-   - Embassy
-5. Tap **Open Google Maps** or transport links
-6. Tap **Install** to add to your phone home screen
+.logo{
+width:5rem;
+height:5rem;
+border-radius:50%;
+border:.2rem solid var(--gold);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:2rem;
+font-weight:bold;
+color:var(--gold);
+cursor:pointer;
+animation:pulse 2s infinite;
+background:rgba(216,185,92,.08);
+box-shadow:0 0 30px rgba(216,185,92,.3);
+}
 
-## Privacy
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.08);}
+100%{transform:scale(1);}
+}
 
-NICE HUMAN[OID] does not store user data on servers.
+.card{
+background:var(--glass);
+border:1px solid rgba(216,185,92,.2);
+padding:1rem;
+border-radius:1.5rem;
+margin-bottom:1rem;
+backdrop-filter:blur(20px);
+box-shadow:0 0 30px rgba(0,0,0,.3);
+}
 
-Ghost Protocol:
-- Processed in browser RAM
-- No account required
-- No server database
-- No tracking system
-- Session resets when closed
+.title{
+font-size:1.2rem;
+margin-bottom:.8rem;
+color:var(--gold);
+}
 
-## Legal
+input{
+width:100%;
+padding:1rem;
+border:none;
+border-radius:1rem;
+background:#151515;
+color:white;
+margin-bottom:1rem;
+font-size:1rem;
+}
 
-NICE HUMAN[OID] is a navigational and cultural directory.  
-Users are responsible for verifying local laws, safety conditions, transport services, and third-party providers.
+button{
+width:100%;
+padding:1rem;
+border:none;
+border-radius:1rem;
+font-weight:bold;
+cursor:pointer;
+margin-top:.5rem;
+background:linear-gradient(45deg,#d8b95c,#f5e6ad);
+color:black;
+font-size:1rem;
+}
 
-© 2026 NICE HUMAN[OID] Sovereign OS. All Rights Reserved.
+iframe{
+width:100%;
+height:20rem;
+border:none;
+border-radius:1rem;
+}
+
+.tags{
+display:flex;
+flex-wrap:wrap;
+gap:.5rem;
+margin-top:1rem;
+}
+
+.tag{
+padding:.5rem .9rem;
+border-radius:999px;
+background:rgba(216,185,92,.1);
+border:1px solid rgba(216,185,92,.2);
+font-size:.8rem;
+}
+
+.liveText{
+margin-top:.8rem;
+opacity:.8;
+min-height:1.4rem;
+}
+
+.footer{
+margin-top:2rem;
+text-align:center;
+opacity:.6;
+font-size:.8rem;
+line-height:1.5;
+}
+
+.status{
+margin-top:.7rem;
+color:lightgreen;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="header">
+
+<div>
+<h1>NICE HUMAN[OID]</h1>
+<p>V24 Sovereign OS</p>
+</div>
+
+<div class="logo" id="iris">
+N
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="title">
+Global Sovereign Search
+</div>
+
+<input
+id="searchInput"
+placeholder="Search city, stadium, nightlife, groceries..."
+>
+
+<button onclick="runSearch()">
+Open Maps
+</button>
+
+<div class="tags">
+<div class="tag">#BangkokAfterDark</div>
+<div class="tag">#LondonFootballPulse</div>
+<div class="tag">#WinnipegUnderground</div>
+<div class="tag">#AmsterdamCreative</div>
+</div>
+
+<div class="status" id="status"></div>
+
+</div>
+
+<div class="card">
+
+<div class="title">
+Live Guardian Map
+</div>
+
+<iframe
+id="mapFrame"
+src="https://maps.google.com/maps?q=Bangkok&z=13&output=embed">
+</iframe>
+
+</div>
+
+<div class="card">
+
+<div class="title">
+VoiceOS Hold-To-Talk
+</div>
+
+<button id="talkBtn">
+Hold To Speak
+</button>
+
+<div class="liveText" id="liveText"></div>
+
+</div>
+
+<div class="card">
+
+<div class="title">
+Safe Walk Timer
+</div>
+
+<button onclick="startTimer()">
+Start 5 Minute Timer
+</button>
+
+<div class="status" id="timerStatus"></div>
+
+</div>
+
+<div class="card">
+
+<div class="title">
+Transport Deep Links
+</div>
+
+<button onclick="openUber()">Uber</button>
+<button onclick="openGrab()">Grab</button>
+<button onclick="openBolt()">Bolt</button>
+
+</div>
+
+<div class="card">
+
+<div class="title">
+Global Connect QR
+</div>
+
+<button onclick="generateQR()">
+Generate QR Access
+</button>
+
+<div id="qr"></div>
+
+</div>
+
+<div class="footer">
+
+Processed in your RAM.<br>
+No servers. No footprints.<br>
+Pure Sovereignty.<br><br>
+
+© 2026 NICE HUMAN[OID] Sovereign OS
+
+</div>
+
+</div>
+
+<script>
+
+window.niceGuardian = {
+adopt(data){
+console.log("Guardian adopted:",data);
+}
+};
+
+const input =
+document.getElementById("searchInput");
+
+const mapFrame =
+document.getElementById("mapFrame");
+
+const status =
+document.getElementById("status");
+
+function runSearch(){
+
+const q =
+input.value || "Bangkok";
+
+mapFrame.src =
+"https://maps.google.com/maps?q="
++ encodeURIComponent(q)
++ "&z=14&output=embed";
+
+status.innerHTML =
+"Safe Node Scan Complete ✔";
+
+}
+
+function startTimer(){
+
+const el =
+document.getElementById("timerStatus");
+
+el.innerHTML =
+"Guardian Active...";
+
+setTimeout(()=>{
+
+alert("Safe Walk Timer Complete");
+
+el.innerHTML =
+"Completed ✔";
+
+},300000);
+
+}
+
+function openUber(){
+window.location.href =
+"https://m.uber.com/";
+}
+
+function openGrab(){
+window.location.href =
+"https://www.grab.com/";
+}
+
+function openBolt(){
+window.location.href =
+"https://bolt.eu/";
+}
+
+function generateQR(){
+
+const url =
+window.location.href;
+
+document.getElementById("qr").innerHTML =
+'<img width="220" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data='
++ encodeURIComponent(url)
++ '">';
+
+}
+
+const SpeechRecognition =
+window.SpeechRecognition ||
+window.webkitSpeechRecognition;
+
+if(SpeechRecognition){
+
+const recognition =
+new SpeechRecognition();
+
+recognition.continuous = true;
+recognition.interimResults = true;
+
+const talkBtn =
+document.getElementById("talkBtn");
+
+const liveText =
+document.getElementById("liveText");
+
+let finalTranscript = "";
+
+recognition.onresult = (event)=>{
+
+let interim = "";
+
+for(
+let i = event.resultIndex;
+i < event.results.length;
+i++
+){
+
+const transcript =
+event.results[i][0].transcript;
+
+if(event.results[i].isFinal){
+finalTranscript += transcript;
+}else{
+interim += transcript;
+}
+
+}
+
+liveText.innerHTML =
+interim || finalTranscript;
+
+};
+
+talkBtn.onpointerdown = ()=>{
+
+finalTranscript = "";
+
+recognition.start();
+
+document.getElementById("iris")
+.style.transform = "scale(1.2)";
+
+};
+
+talkBtn.onpointerup = ()=>{
+
+recognition.stop();
+
+document.getElementById("iris")
+.style.transform = "scale(1)";
+
+input.value = finalTranscript;
+
+runSearch();
+
+};
+
+}
+
+document
+.getElementById("iris")
+.addEventListener(
+"contextmenu",
+(e)=>{
+
+e.preventDefault();
+
+alert(
+"The Soul of a Guardian. The Mind of a Machine."
+);
+
+}
+);
+
+</script>
+
+</body>
+</html>
